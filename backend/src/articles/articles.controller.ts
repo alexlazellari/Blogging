@@ -21,8 +21,13 @@ export class ArticlesController {
   }
 
   @Get()
-  findAll() {
-    return this.articlesService.findAll();
+  async findAll() {
+    const articles = await this.articlesService.findAll();
+    return {
+      status: 'success',
+      totalResults: articles.length,
+      articles,
+    };
   }
 
   @Get(':id')
