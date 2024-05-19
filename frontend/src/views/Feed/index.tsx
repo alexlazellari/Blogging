@@ -1,10 +1,12 @@
+import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
+import ArticleForm from "src/components/ArticleForm";
 import ArticleList from "src/components/ArticleList";
 import { fetchArticles } from "src/service";
 import { ArticleType } from "src/types";
 
 export default function Feed() {
-  const [articles, setArticles] = useState<ArticleType[]>([]);
+  const [articles, setArticles] = useState<ArticleType[] | null>([]);
 
   useEffect(() => {
     fetchArticles().then((data) => {
@@ -12,5 +14,10 @@ export default function Feed() {
     });
   }, []);
 
-  return <ArticleList articles={articles} />;
+  return (
+    <Container disableGutters>
+      <ArticleForm />
+      <ArticleList articles={articles} />
+    </Container>
+  );
 }

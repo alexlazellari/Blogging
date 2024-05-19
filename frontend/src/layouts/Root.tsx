@@ -14,7 +14,7 @@ export default function Root() {
           margin: "auto",
         }}
       >
-        <Toolbar sx={{ height: "5rem" }} />
+        <Toolbar sx={{ height: "2rem" }} />
         <Outlet />
       </Box>
       <Footer />
