@@ -7,7 +7,13 @@ interface Props {
 
 export default function Article({ article }: Props) {
   return (
-    <Card>
+    <Card
+      elevation={0}
+      sx={{
+        border: "1px solid #d2d2d2",
+        mb: 2,
+      }}
+    >
       <CardContent>
         <Typography variant="h5" component="h3">
           {article.title}
