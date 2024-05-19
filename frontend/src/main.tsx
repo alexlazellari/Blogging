@@ -11,6 +11,7 @@ import NotFound from "src/views/Error";
 import Root from "src/layouts/Root";
 import Feed from "src/views/Feed";
 import "./index.css";
+import Profile from "src/views/Profile";
 
 const router = createBrowserRouter([
   {
@@ -22,10 +23,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Feed />,
       },
-      // {
-      //   path: "news",
-      //   element: <News />,
-      // },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
     ],
   },
 ]);
