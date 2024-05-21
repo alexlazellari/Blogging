@@ -12,6 +12,9 @@ import Root from "src/layouts/Root";
 import Feed from "src/views/Feed";
 import "./index.css";
 import Profile from "src/views/Profile";
+import Login from "./views/Login";
+import Protected from "./components/Protected";
+import { AuthProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +28,11 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: <Protected element={Profile} />,
+      },
+      {
+        path: "login",
+        element: <Login />,
       },
     ],
   },
@@ -40,9 +47,11 @@ const theme = createTheme({
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline enableColorScheme />
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme />
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
