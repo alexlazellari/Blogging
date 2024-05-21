@@ -75,7 +75,11 @@ export default function Profile() {
           mb: 3,
         }}
         container
-        spacing={4}
+        spacing={{
+          xs: 2,
+          sm: 3,
+          md: 4,
+        }}
       >
         <Grid xs={12}>
           <Typography sx={{ fontSize: "1.25rem", fontWeight: "bold" }}>
@@ -155,7 +159,11 @@ export default function Profile() {
           m: 0,
         }}
         container
-        spacing={4}
+        spacing={{
+          xs: 2,
+          sm: 3,
+          md: 4,
+        }}
       >
         <Grid xs={12}>
           <Typography sx={{ fontSize: "1.25rem", fontWeight: "bold" }}>
