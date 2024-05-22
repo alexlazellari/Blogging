@@ -3,13 +3,21 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "src/context/AuthContext";
 
 interface Props {
-  element: React.ComponentType;
-  [key: string]: any;
+  component: React.ComponentType;
 }
 
-const Protected: React.FC<Props> = ({ element: Component, ...rest }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Component {...rest} /> : <Navigate to="/login" />;
+const Protected: React.FC<Props> = ({ component: Component, ...rest }) => {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  return <Component {...rest} />;
 };
 
 export default Protected;

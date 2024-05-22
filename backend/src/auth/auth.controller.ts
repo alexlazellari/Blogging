@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';
 import { Response } from 'express';
+import { users } from 'src/users/users.service';
+import { GetUser } from './auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -16,9 +18,9 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Set secure flag in production
       sameSite: 'lax',
-      maxAge: 3600 * 1000, // 1 hour
+      maxAge: 60 * 60 * 24 * 7,
     });
-    return res.status(200).send({ message: 'Login successful' });
+    return res.status(200).send({ status: 'ok', message: 'Login successful' });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -30,7 +32,8 @@ export class AuthController {
   //Add a isAuth route to check if the user is authenticated
   @UseGuards(JwtAuthGuard)
   @Get('isAuth')
-  isAuth() {
-    return { message: 'Authenticated' };
+  isAuth(@GetUser() username: string) {
+    const user = users.find((user) => user.username === username);
+    return { status: 'ok', user };
   }
 }
