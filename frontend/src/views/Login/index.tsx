@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import { getProfile, login } from "src/service";
+import { login } from "src/service";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);

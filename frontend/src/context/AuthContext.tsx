@@ -1,9 +1,18 @@
-import { createContext, useState, useContext, ReactNode } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+} from "react";
+import { isAuth } from "src/service";
+import { UserType } from "src/types";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
-  login: (token: string) => void;
-  logout: () => void;
+  isLoading: boolean;
+  user: UserType | null;
+  error: string | null;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(
@@ -12,19 +21,29 @@ export const AuthContext = createContext<AuthContextProps | undefined>(
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<UserType | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const login = (token: string) => {
-    // Save token in memory (or in a more secure place)
-    setIsAuthenticated(true);
-  };
+  useEffect(() => {
+    // Check authentication status on component mount
+    const checkAuth = async () => {
+      setIsLoading(true);
+      const user = await isAuth();
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+      setUser(user);
+      setIsLoading(false);
+    };
 
-  const logout = () => {
-    // Remove token from memory (or from a more secure place)
-    setIsAuthenticated(false);
-  };
+    checkAuth();
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, user, error }}>
       {children}
     </AuthContext.Provider>
   );
