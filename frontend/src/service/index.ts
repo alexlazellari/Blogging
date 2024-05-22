@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-import { ArticleType } from "src/types";
+import { ArticleType, UserType } from "src/types";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -142,6 +142,43 @@ export async function getProfile(): Promise<any | null> {
       return response.data;
     } else {
       console.error("Failed to get profile:", response.status);
+      return null;
+    }
+  } catch (err) {
+    // Handle errors from Axios
+    if (axios.isAxiosError(err)) {
+      console.error("Axios error.", "Code:", err.code, "Message:", err.message);
+    } else {
+      console.error("Unexpected error:", err);
+    }
+    return null;
+  }
+}
+
+// Check if the user is authenticated
+export async function isAuth(): Promise<UserType | null> {
+  const config: AxiosRequestConfig = {
+    headers: {
+      Accept: "application/json",
+    },
+  };
+
+  try {
+    const response: AxiosResponse = await client.get(`/auth/isAuth`, config);
+    console.log("isAuth response:", response.data);
+
+    // Check if the response status code is 200 (OK)
+    if (response.status === 200) {
+      // if (response.data.status === "ok") {
+      return response.data.user;
+      // } else {
+      // return null;
+      // }
+    } else {
+      console.error(
+        "Failed to check if the user is authenticated:",
+        response.status
+      );
       return null;
     }
   } catch (err) {

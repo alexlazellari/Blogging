@@ -10,6 +10,7 @@ import {
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useState } from "react";
+import { useAuth } from "src/context/AuthContext";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -24,6 +25,8 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function Profile() {
+  // Make use of useAuth to get the user object
+  const { user } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   // We need to know if the user is editing the profile and which field they are editing
   const [editingField, setEditingField] = useState<string | null>(null);
@@ -43,6 +46,8 @@ export default function Profile() {
   const onSave = (): void => {
     setEditingField(null);
   };
+
+  if (!user) return null;
 
   return (
     <Container disableGutters>
@@ -120,6 +125,7 @@ export default function Profile() {
                 margin="dense"
                 fullWidth
                 disabled={editingField !== "first_name"}
+                defaultValue={user.username}
               />
               {editingField === "first_name" ? (
                 <Button onClick={onSave}>Save</Button>
