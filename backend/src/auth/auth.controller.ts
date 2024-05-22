@@ -15,15 +15,22 @@ export class AuthController {
     res.cookie('access_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Set secure flag in production
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 3600 * 1000, // 1 hour
     });
-    return res.send({ message: 'Login successful' });
+    return res.status(200).send({ message: 'Login successful' });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  //Add a isAuth route to check if the user is authenticated
+  @UseGuards(JwtAuthGuard)
+  @Get('isAuth')
+  isAuth() {
+    return { message: 'Authenticated' };
   }
 }

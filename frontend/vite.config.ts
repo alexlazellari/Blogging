@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     // This is a workaround for a bug in vite-plugin-react-swc for Grid2
-    include: ["@emotion/styled", "@mui/material/Unstable_Grid2"],
+    // include: ["@emotion/styled", "@mui/material/Unstable_Grid2"],
   },
   resolve: {
     alias: {
