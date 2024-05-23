@@ -6,23 +6,31 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { GetUser } from 'src/auth/auth.decorator';
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articlesService.create(createArticleDto);
+  create(
+    @GetUser() userInfo: { username: string; id: number },
+    @Body() createArticleDto: CreateArticleDto,
+  ) {
+    return this.articlesService.create(userInfo.id, createArticleDto);
   }
 
   @Get()
   async findAll() {
     const articles = await this.articlesService.findAll();
+    console.log(articles);
     return {
       status: 'success',
       totalResults: articles.length,

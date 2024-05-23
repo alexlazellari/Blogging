@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Feed />,
+        element: <Protected component={Feed} />,
       },
       {
         path: "profile",
