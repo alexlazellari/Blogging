@@ -191,3 +191,35 @@ export async function isAuth(): Promise<UserType | null> {
     return null;
   }
 }
+
+// Delete an article
+export async function deleteArticle(id: number): Promise<boolean> {
+  const config: AxiosRequestConfig = {
+    headers: {
+      Accept: "application/json",
+    },
+  };
+
+  try {
+    const response: AxiosResponse = await client.delete(
+      `/articles/${id}`,
+      config
+    );
+
+    // Check if the response status code is 200 (OK)
+    if (response.status === 200) {
+      return true;
+    } else {
+      console.error("Failed to delete article:", response.status);
+      return false;
+    }
+  } catch (err) {
+    // Handle errors from Axios
+    if (axios.isAxiosError(err)) {
+      console.error("Axios error.", "Code:", err.code, "Message:", err.message);
+    } else {
+      console.error("Unexpected error:", err);
+    }
+    return false;
+  }
+}

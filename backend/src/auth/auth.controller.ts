@@ -21,7 +21,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Set secure flag in production
       sameSite: 'lax',
-      maxAge: 60 * 90 * 1000,
+      maxAge: 1 * 60 * 60 * 1000,
     });
     return res.status(200).send({ status: 'ok', message: 'Login successful' });
   }

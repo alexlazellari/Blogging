@@ -33,7 +33,12 @@ export default function Login() {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    login(username, password);
+    const response = await login(username, password);
+
+    // after successful login, redirect to feed don't refresh the page
+    if (response) {
+      window.location.href = "/";
+    }
   };
   return (
     <Container sx={{ border: "1px solid lightgrey", py: 2 }}>
