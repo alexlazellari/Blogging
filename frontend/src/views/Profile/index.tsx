@@ -125,7 +125,7 @@ export default function Profile() {
                 margin="dense"
                 fullWidth
                 disabled={editingField !== "first_name"}
-                defaultValue={user.username}
+                defaultValue={user.firstName}
               />
               {editingField === "first_name" ? (
                 <Button onClick={onSave}>Save</Button>
@@ -147,6 +147,7 @@ export default function Profile() {
                 margin="dense"
                 autoComplete="off"
                 disabled={editingField !== "last_name"}
+                defaultValue={user.lastName}
               />
               {editingField === "last_name" ? (
                 <Button onClick={onSave}>Save</Button>
