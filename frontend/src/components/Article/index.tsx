@@ -1,4 +1,10 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import {
+  Avatar,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+} from "@mui/material";
 import { ArticleType } from "src/types";
 
 interface Props {
@@ -14,12 +20,27 @@ export default function Article({ article }: Props) {
         mb: 2,
       }}
     >
+      <CardHeader
+        avatar={
+          <CardHeader
+            avatar={
+              <Avatar
+                src={`https://avatars.dicebear.com/api/micah/${article.user.username}.svg`}
+                alt={`Avatar for ${article.user.firstName}`}
+              />
+            }
+            title={`${article.user.firstName} ${article.user.lastName}`}
+            subheader={new Date(article.created)
+              .toUTCString()
+              .replace("GMT", "")}
+          />
+        }
+        title={`${article.user.firstName} ${article.user.lastName}`}
+        subheader={new Date(article.created).toUTCString().replace("GMT", "")}
+      />
       <CardContent>
         <Typography variant="h5" component="h3">
           {article.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {article.date}
         </Typography>
         <Typography variant="body1">{article.content}</Typography>
       </CardContent>

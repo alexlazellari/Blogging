@@ -12,12 +12,15 @@ export class ArticlesService {
     private articlesRepository: Repository<Article>,
   ) {}
 
-  create(createArticleDto: CreateArticleDto): Promise<Article> {
-    return this.articlesRepository.save(createArticleDto);
+  create(userId: number, createArticleDto: CreateArticleDto): Promise<Article> {
+    return this.articlesRepository.save({
+      userId,
+      ...createArticleDto,
+    });
   }
 
   findAll(): Promise<Article[]> {
-    return this.articlesRepository.find();
+    return this.articlesRepository.find({ relations: ['user'] });
   }
 
   findOne(id: number) {

@@ -2,33 +2,37 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
-export const users = [
-  {
-    id: 1,
-    username: 'john',
-    password: 'changeme',
-    created: new Date(),
-  },
-  {
-    id: 2,
-    username: 'chris',
-    password: 'secret',
-    created: new Date(),
-  },
-];
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
+
+  create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
+    return this.userRepository
+      .save(createUserDto)
+      .then(({ password, ...user }) => user);
   }
 
   findAll() {
     return `This action returns all users`;
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return users.find((user) => user.username === username);
+  async findOne(username: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { username } });
+  }
+
+  async findOneWithPassword(username: string): Promise<User | null> {
+    // This method should return the user with the password
+    return this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.username = :username', { username })
+      .getOne();
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

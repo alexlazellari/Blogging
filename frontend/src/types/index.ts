@@ -1,13 +1,15 @@
 export type ArticleType = {
   id: number;
   title: string;
-  date: string;
   content: string;
+  created: Date;
+  user: UserType;
 };
 
 export type UserType = {
   id: number;
+  firstName: string;
+  lastName: string;
   username: string;
-  password: string;
   created: string;
 };
