@@ -1,17 +1,42 @@
+import React, { useState } from "react";
 import {
   Avatar,
   Card,
   CardContent,
   CardHeader,
+  IconButton,
+  Menu,
+  MenuItem,
   Typography,
 } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useAuth } from "src/context/AuthContext";
+import { deleteArticle } from "src/service";
 import { ArticleType } from "src/types";
 
 interface Props {
-  article: ArticleType;
+  article: ArticleType; // Ensure that ArticleType correctly defines user: { id, username, firstName, lastName }
 }
 
 export default function Article({ article }: Props) {
+  const { user } = useAuth();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const onMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const onClose = () => {
+    setAnchorEl(null);
+  };
+
+  const onDelete = (articleId: number) => {
+    console.log(`Deleting article with id ${articleId}`);
+    deleteArticle(articleId);
+  };
+
   return (
     <Card
       elevation={0}
@@ -21,22 +46,37 @@ export default function Article({ article }: Props) {
       }}
     >
       <CardHeader
-        avatar={
-          <CardHeader
-            avatar={
-              <Avatar
-                src={`https://avatars.dicebear.com/api/micah/${article.user.username}.svg`}
-                alt={`Avatar for ${article.user.firstName}`}
-              />
-            }
-            title={`${article.user.firstName} ${article.user.lastName}`}
-            subheader={new Date(article.created)
-              .toUTCString()
-              .replace("GMT", "")}
-          />
-        }
         title={`${article.user.firstName} ${article.user.lastName}`}
         subheader={new Date(article.created).toUTCString().replace("GMT", "")}
+        avatar={
+          <Avatar
+            src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${article.user.username}`}
+            alt={`Avatar for ${article.user.firstName}`}
+          />
+        }
+        action={
+          user && user.id === article.user.id ? (
+            <div>
+              <IconButton aria-label="settings" onClick={onMenuClick}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={onClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem onClick={() => onDelete(article.id)}>
+                  <DeleteIcon color="error" sx={{ mr: 1 }} />
+                  Delete
+                </MenuItem>
+              </Menu>
+            </div>
+          ) : null
+        }
       />
       <CardContent>
         <Typography variant="h5" component="h3">

@@ -50,6 +50,10 @@ export class ArticlesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.articlesService.remove(+id);
+    this.articlesService.remove(+id);
+    return {
+      status: 'ok',
+      message: `Article with id ${id} has been deleted`,
+    };
   }
 }

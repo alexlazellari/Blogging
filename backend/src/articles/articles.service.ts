@@ -32,6 +32,6 @@ export class ArticlesService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} article`;
+    return this.articlesRepository.delete(id);
   }
 }
