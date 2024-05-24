@@ -77,7 +77,7 @@ export default function Login() {
           />
         </FormControl>
         <Box sx={{ mb: 4, display: "inline-block" }} component="span">
-          Username: john, Password: changeme
+          Username: admin, Password: password
         </Box>
         <Button variant="contained" type="submit" fullWidth disableElevation>
           Login
