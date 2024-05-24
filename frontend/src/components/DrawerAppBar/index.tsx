@@ -79,7 +79,7 @@ export default function DrawerAppBar(props: Props) {
           >
             <Menu />
           </IconButton>
-          {/* <Logo /> */}
+          <Logo />
           <Box
             sx={{
               display: { xs: "none", sm: "flex" },
