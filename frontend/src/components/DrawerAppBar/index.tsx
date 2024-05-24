@@ -45,6 +45,7 @@ export default function DrawerAppBar(props: Props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+      <Logo />
       <Divider />
       <List>
         {navItems.map((item) => (
@@ -78,6 +79,7 @@ export default function DrawerAppBar(props: Props) {
           >
             <Menu />
           </IconButton>
+          {/* <Logo /> */}
           <Box
             sx={{
               display: { xs: "none", sm: "flex" },
