@@ -30,7 +30,6 @@ export class ArticlesController {
   @Get()
   async findAll() {
     const articles = await this.articlesService.findAll();
-    console.log(articles);
     return {
       status: 'success',
       totalResults: articles.length,
