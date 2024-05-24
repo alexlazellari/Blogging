@@ -10,7 +10,7 @@ const Protected: React.FC<Props> = ({ component: Component, ...rest }) => {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (!user) {

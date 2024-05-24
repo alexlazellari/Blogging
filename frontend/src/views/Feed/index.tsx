@@ -10,7 +10,6 @@ export default function Feed() {
 
   useEffect(() => {
     fetchArticles().then((data) => {
-      console.log(data);
       setArticles(data);
     });
   }, []);
