@@ -17,6 +17,10 @@ import Protected from "./components/Protected";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./views/Landing";
 import Visitor from "./layouts/Visitor";
+import PrivacyPolicy from "./views/legal-pages/PrivacyPolicy";
+import CookiePolicy from "./views/legal-pages/CookiePolicy";
+import Disclaimer from "./views/legal-pages/Disclaimer";
+import TermsOfService from "./views/legal-pages/TermsOfService";
 
 export const AppRouter = () => {
   const { user, isLoading } = useAuth();
@@ -59,6 +63,26 @@ export const AppRouter = () => {
           {
             index: true,
             element: <Landing />,
+          },
+          {
+            path: "login",
+            element: <Login />,
+          },
+          {
+            path: "privacy-policy",
+            element: <PrivacyPolicy />,
+          },
+          {
+            path: "cookie-policy",
+            element: <CookiePolicy />,
+          },
+          {
+            path: "disclaimer",
+            element: <Disclaimer />,
+          },
+          {
+            path: "terms-of-service",
+            element: <TermsOfService />,
           },
         ],
       },

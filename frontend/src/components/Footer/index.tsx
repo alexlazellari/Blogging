@@ -29,6 +29,8 @@ export default function Footer() {
         >
           <Link href="/privacy-policy">Privacy Policy</Link> {" | "}
           <Link href="/terms-of-service">Terms of Service</Link> {" | "}
+          <Link href="/cookie-policy">Cookie Policy</Link> {" | "}
+          <Link href="/disclaimer">Disclaimer</Link> {" | "}
           <Link href="/contact-us">Contact Us</Link>
         </CenteredTypography>
         <CenteredTypography
