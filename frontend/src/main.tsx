@@ -97,13 +97,13 @@ export const AppRouter = () => {
 const theme = createTheme({
   palette: {
     mode: "light",
-    // primary: {
-    //   main: "#18181b", // Define primary color used in other components
-    // },
-    // text: {
-    //   primary: "#18181b", // Primary text color
-    //   secondary: "#565656", // Secondary text color (you can change this as needed)
-    // },
+    primary: {
+      main: "#18181b", // Define primary color used in other components
+    },
+    text: {
+      primary: "#18181b", // Primary text color
+      secondary: "#565656", // Secondary text color (you can change this as needed)
+    },
     contrastThreshold: 4.5,
   },
   typography: {
