@@ -41,48 +41,65 @@ export default function Login() {
     }
   };
   return (
-    <Container sx={{ border: "1px solid lightgrey", py: 2 }}>
-      <Typography variant="h1" sx={{ fontSize: "2rem", textAlign: "center" }}>
-        Login
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Username"
-          type="text"
-          required
-          margin="dense"
-          autoComplete="off"
-          name="username"
-          fullWidth
-        />
-        <FormControl margin="dense" fullWidth variant="outlined">
-          <InputLabel htmlFor="password">Password</InputLabel>
-          <OutlinedInput
-            id="password"
-            type={showPassword ? "text" : "password"}
-            name="password"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-          />
-        </FormControl>
-        <Box sx={{ mb: 4, display: "inline-block" }} component="span">
-          Username: admin, Password: password
-        </Box>
-        <Button variant="contained" type="submit" fullWidth disableElevation>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "calc(100vh - 11rem)",
+        minHeight: "31.25rem",
+      }}
+    >
+      <Box>
+        <Typography
+          variant="h1"
+          sx={{ fontWeight: "normal", textAlign: "center" }}
+        >
           Login
-        </Button>
-      </form>
+        </Typography>
+        <Typography variant="subtitle1" sx={{ textAlign: "center", mb: 4 }}>
+          Enter your username below to login to your account.
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Username"
+            type="text"
+            required
+            margin="dense"
+            autoComplete="off"
+            name="username"
+            fullWidth
+          />
+          <FormControl margin="dense" fullWidth variant="outlined">
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <OutlinedInput
+              id="password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+          <Box sx={{ mb: 4, display: "inline-block" }} component="span">
+            Username: admin, Password: password
+          </Box>
+          <Button variant="contained" type="submit" fullWidth disableElevation>
+            Login
+          </Button>
+        </form>
+      </Box>
     </Container>
   );
 }
