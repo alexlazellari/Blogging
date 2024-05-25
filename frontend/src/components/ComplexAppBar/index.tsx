@@ -20,6 +20,7 @@ import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { useState } from "react";
 import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
 import { useAuth } from "src/context/AuthContext";
+import { logout } from "src/service";
 
 const drawerWidth = 240;
 
@@ -119,6 +120,15 @@ export default function ComplexAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
+  const onMenuClick = (setting: string | null) => {
+    setAnchorElUser(null);
+    if (setting === "Logout") {
+      logout();
+      // Refresh the page to reflect the logout
+      window.location.reload();
+    }
+  };
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -200,7 +210,7 @@ export default function ComplexAppBar() {
                 <MenuItem
                   disableGutters
                   key={setting}
-                  onClick={handleCloseUserMenu}
+                  onClick={() => onMenuClick(setting)}
                   sx={{
                     px: ".5rem",
                     borderRadius: "5px",

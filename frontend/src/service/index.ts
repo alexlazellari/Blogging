@@ -222,3 +222,32 @@ export async function deleteArticle(id: number): Promise<boolean> {
     return false;
   }
 }
+
+// Logout from the server
+export async function logout(): Promise<boolean> {
+  const config: AxiosRequestConfig = {
+    headers: {
+      Accept: "application/json",
+    },
+  };
+
+  try {
+    const response: AxiosResponse = await client.post(`/auth/logout`, config);
+
+    // Check if the response status code is 200 (OK)
+    if (response.status === 200) {
+      return true;
+    } else {
+      console.error("Failed to logout:", response.status);
+      return false;
+    }
+  } catch (err) {
+    // Handle errors from Axios
+    if (axios.isAxiosError(err)) {
+      console.error("Axios error.", "Code:", err.code, "Message:", err.message);
+    } else {
+      console.error("Unexpected error:", err);
+    }
+    return false;
+  }
+}
