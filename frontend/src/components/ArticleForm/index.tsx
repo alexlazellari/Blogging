@@ -1,7 +1,17 @@
-import { Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useState } from "react";
 import { createArticle } from "src/service";
 import HelperTextAlert from "../HelperTextAlert";
+import { useAuth } from "src/context/AuthContext";
 
 export type HelperTextType = {
   success: boolean;
@@ -9,6 +19,8 @@ export type HelperTextType = {
 };
 
 export default function ArticleForm() {
+  const { user } = useAuth();
+  const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,63 +72,107 @@ export default function ArticleForm() {
     setOpenHelperText(false);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <Paper
-      sx={{
-        mb: 4,
-        border: "1px solid #d2d2d2",
-        p: 2,
-      }}
-      elevation={0}
-    >
-      <form onSubmit={onSubmit} style={{ marginBottom: "1rem" }}>
-        <Typography
-          sx={{
-            fontSize: "1.25rem",
-            textAlign: "center",
-          }}
-        >
-          Create a post
-        </Typography>
-        <TextField
-          size="small"
-          margin="dense"
-          label="Title"
-          variant="outlined"
-          fullWidth
-          value={title}
-          onChange={onChangeTitle}
-          disabled={isLoading}
-          autoComplete="off"
-          required
-        />
-        <TextField
-          size="small"
-          label="Content"
-          fullWidth
-          margin="dense"
-          variant="outlined"
-          rows={3}
-          multiline
-          value={content}
-          onChange={onChangeContent}
-          disabled={isLoading}
-          required
-        />
-        <Button
-          disabled={isLoading}
-          type="submit"
-          size="small"
-          variant="contained"
-        >
-          Submit
-        </Button>
-      </form>
-      <HelperTextAlert
-        open={openHelperText}
-        handleClose={onCloseHelperText}
-        helperText={helperText}
-      />
-    </Paper>
+    <>
+      <Button
+        fullWidth
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          mb: 2,
+          p: 2,
+          border: "1px solid rgba(0,0,0,0.2)",
+        }}
+        onClick={handleClickOpen}
+      >
+        {user && (
+          <Avatar
+            sx={{
+              border: "1px solid rgba(0, 0, 0, 0.2)",
+              mr: 1,
+            }}
+            src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${user.username}`}
+            alt={`Avatar for ${user.firstName}`}
+          />
+        )}
+        <Typography variant="body1">Do you have any thoughts?</Typography>
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="md"
+        fullWidth
+        sx={{
+          border: "1px solid #d2d2d2",
+          p: 2,
+          "& .MuiDialog-paper": {
+            m: 0,
+          },
+        }}
+      >
+        <form onSubmit={onSubmit}>
+          <DialogTitle
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            Share a though
+          </DialogTitle>
+          <DialogContent>
+            <TextField
+              size="small"
+              margin="dense"
+              label="Title"
+              variant="standard"
+              fullWidth
+              value={title}
+              onChange={onChangeTitle}
+              disabled={isLoading}
+              autoComplete="off"
+              required
+            />
+            <TextField
+              size="small"
+              label="Content"
+              fullWidth
+              margin="dense"
+              variant="standard"
+              rows={3}
+              multiline
+              value={content}
+              onChange={onChangeContent}
+              disabled={isLoading}
+              sx={{
+                mb: 2,
+              }}
+              required
+            />
+            <Button
+              disabled={isLoading}
+              type="submit"
+              size="small"
+              variant="contained"
+              disableElevation
+              fullWidth
+            >
+              Post
+            </Button>
+          </DialogContent>
+          <HelperTextAlert
+            open={openHelperText}
+            handleClose={onCloseHelperText}
+            helperText={helperText}
+          />
+        </form>
+      </Dialog>
+    </>
   );
 }

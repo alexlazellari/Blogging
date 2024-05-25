@@ -8,21 +8,26 @@ import {
   Menu,
   MenuItem,
   Typography,
+  Button,
+  CardActions,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "src/context/AuthContext";
 import { deleteArticle } from "src/service";
 import { ArticleType } from "src/types";
+import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
 
 interface Props {
-  article: ArticleType; // Ensure that ArticleType correctly defines user: { id, username, firstName, lastName }
+  article: ArticleType;
 }
 
 export default function Article({ article }: Props) {
   const { user } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isFullText, setIsFullText] = useState(false);
   const open = Boolean(anchorEl);
+  const textLimit = 200; // Adjust the character limit as needed
 
   const onMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -37,6 +42,15 @@ export default function Article({ article }: Props) {
     deleteArticle(articleId);
   };
 
+  const toggleFullText = () => {
+    setIsFullText(!isFullText);
+  };
+
+  const displayContent =
+    article.content.length > textLimit && !isFullText
+      ? `${article.content.substring(0, textLimit)}...`
+      : article.content;
+
   return (
     <Card
       elevation={0}
@@ -50,6 +64,9 @@ export default function Article({ article }: Props) {
         subheader={new Date(article.created).toUTCString().replace("GMT", "")}
         avatar={
           <Avatar
+            sx={{
+              border: "1px solid rgba(0, 0, 0, 0.2)",
+            }}
             src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${article.user.username}`}
             alt={`Avatar for ${article.user.firstName}`}
           />
@@ -82,8 +99,27 @@ export default function Article({ article }: Props) {
         <Typography variant="h5" component="h3">
           {article.title}
         </Typography>
-        <Typography variant="body1">{article.content}</Typography>
+        <Typography variant="body1">
+          {displayContent}
+          {article.content.length > textLimit && (
+            <Button size="small" onClick={toggleFullText}>
+              {isFullText ? "Read Less" : "Read More"}
+            </Button>
+          )}
+        </Typography>
       </CardContent>
+      <CardActions>
+        <Button
+          sx={{
+            color: "#FFAC04",
+          }}
+          startIcon={<StarBorderRoundedIcon />}
+          size="small"
+        >
+          Like
+        </Button>
+        <Button size="small">Comment</Button>
+      </CardActions>
     </Card>
   );
 }
