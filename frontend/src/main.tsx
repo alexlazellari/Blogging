@@ -14,29 +14,61 @@ import "./index.css";
 import Profile from "src/views/Profile";
 import Login from "./views/Login";
 import Protected from "./components/Protected";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import Landing from "./views/Landing";
+import Visitor from "./layouts/Visitor";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <NotFound />,
-    children: [
+export const AppRouter = () => {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div></div>;
+  }
+
+  let routes = [];
+
+  if (user) {
+    routes = [
       {
-        index: true,
-        element: <Protected component={Feed} />,
+        path: "/",
+        element: <Root />,
+        errorElement: <NotFound />,
+        children: [
+          {
+            index: true,
+            element: <Protected component={Feed} />,
+          },
+          {
+            path: "profile",
+            element: <Protected component={Profile} />,
+          },
+          {
+            path: "login",
+            element: <Login />,
+          },
+        ],
       },
+    ];
+  } else {
+    routes = [
       {
-        path: "profile",
-        element: <Protected component={Profile} />,
+        path: "/",
+        element: <Visitor />,
+        errorElement: <NotFound />,
+        children: [
+          {
+            index: true,
+            element: <Landing />,
+          },
+        ],
       },
-      {
-        path: "login",
-        element: <Login />,
-      },
-    ],
-  },
-]);
+    ];
+  }
+
+  const router = createBrowserRouter(routes);
+
+  return <RouterProvider router={router} />;
+};
 
 const theme = createTheme({
   palette: {
@@ -50,7 +82,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <AuthProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
-        <RouterProvider router={router} />
+        <AppRouter />
       </ThemeProvider>
     </AuthProvider>
   </React.StrictMode>

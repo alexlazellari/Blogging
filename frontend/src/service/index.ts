@@ -165,7 +165,6 @@ export async function isAuth(): Promise<UserType | null> {
 
   try {
     const response: AxiosResponse = await client.get(`/auth/isAuth`, config);
-    console.log("isAuth response:", response.data);
 
     // Check if the response status code is 200 (OK)
     if (response.status === 200) {
