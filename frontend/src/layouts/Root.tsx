@@ -1,25 +1,43 @@
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Footer from "src/components/Footer";
 import { Outlet } from "react-router-dom";
-import DrawerAppBar from "src/components/DrawerAppBar";
+import ComplexAppBar from "src/components/ComplexAppBar";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function Root() {
+  // Give me a function that get the query and return the result
+  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+
+  console.log(matches);
+
   return (
     <Box sx={{ margin: { xs: "1rem" } }}>
-      <DrawerAppBar />
       <Box
         component="main"
         sx={{
           minHeight: "calc(100vh - 1rem)",
-          maxWidth: "1280px",
-          margin: "auto",
+          width: matches ? "calc(100% - 64px)" : "100%",
+          marginLeft: "auto",
         }}
       >
-        <Toolbar sx={{ height: "2rem" }} />
+        <ComplexAppBar />
+        <Toolbar
+          sx={{
+            minHeight: {
+              xs: "4rem",
+            },
+          }}
+        />
         <Outlet />
+        <Toolbar
+          sx={{
+            minHeight: {
+              xs: "1.5rem",
+            },
+          }}
+        />
       </Box>
-      <Footer />
     </Box>
   );
 }
