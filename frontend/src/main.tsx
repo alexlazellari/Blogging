@@ -99,6 +99,27 @@ const theme = createTheme({
     mode: "light",
     contrastThreshold: 4.5,
   },
+  typography: {
+    fontSize: 12, // This sets the base font size to 12px
+    h1: {
+      fontSize: "2.5rem", // approximately 30px
+    },
+    h2: {
+      fontSize: "2.25rem", // approximately 27px
+    },
+    h3: {
+      fontSize: "2rem", // approximately 24px
+    },
+    h4: {
+      fontSize: "1.75rem", // approximately 21px
+    },
+    h5: {
+      fontSize: "1.5rem", // approximately 18px
+    },
+    h6: {
+      fontSize: "1.25rem", // approximately 15px
+    },
+  },
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
