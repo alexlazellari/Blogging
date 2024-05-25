@@ -16,7 +16,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "src/context/AuthContext";
 import { deleteArticle } from "src/service";
 import { ArticleType } from "src/types";
-import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface Props {
   article: ArticleType;
@@ -24,10 +25,15 @@ interface Props {
 
 export default function Article({ article }: Props) {
   const { user } = useAuth();
+  const [liked, setLiked] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isFullText, setIsFullText] = useState(false);
   const open = Boolean(anchorEl);
   const textLimit = 200; // Adjust the character limit as needed
+
+  const toggleLike = () => {
+    setLiked(!liked);
+  };
 
   const onMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -110,13 +116,12 @@ export default function Article({ article }: Props) {
       </CardContent>
       <CardActions>
         <Button
-          sx={{
-            color: "#FFAC04",
-          }}
-          startIcon={<StarBorderRoundedIcon />}
+          color="error"
+          startIcon={liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          onClick={toggleLike}
           size="small"
         >
-          Like
+          Love
         </Button>
         <Button size="small">Comment</Button>
       </CardActions>
