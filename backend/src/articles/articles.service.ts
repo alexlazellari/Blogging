@@ -20,7 +20,12 @@ export class ArticlesService {
   }
 
   findAll(): Promise<Article[]> {
-    return this.articlesRepository.find({ relations: ['user'] });
+    return this.articlesRepository.find({
+      relations: ['user'],
+      order: {
+        created: 'DESC', // Ensures the latest articles are first
+      },
+    });
   }
 
   findOne(id: number) {
