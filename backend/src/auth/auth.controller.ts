@@ -39,4 +39,10 @@ export class AuthController {
     const user = await this.userService.findOne(userInfo.username);
     return { status: 'ok', user };
   }
+
+  @Post('logout')
+  async logout(@Res() res: Response) {
+    res.clearCookie('access_token');
+    return res.status(200).send({ status: 'ok', message: 'Logout successful' });
+  }
 }
