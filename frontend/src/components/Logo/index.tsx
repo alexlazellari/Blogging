@@ -9,7 +9,7 @@ export default function Logo() {
       sx={{
         color: "text.primary",
         fontWeight: "bold",
-        fontSize: "1.25rem",
+        fontSize: "1rem",
       }}
       disableElevation
     >
