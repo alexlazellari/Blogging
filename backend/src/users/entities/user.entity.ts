@@ -28,9 +28,9 @@ export class User {
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created: Date;
 
-  @OneToMany(() => Article, (article) => article.user)
+  @OneToMany('Article', 'user')
   articles: Relation<Article>[];
 
-  @OneToMany(() => Like, (like) => like.user)
-  likes: Relation<Like>[];
+  @OneToMany('Like', 'user')
+  likes: Like[];
 }
