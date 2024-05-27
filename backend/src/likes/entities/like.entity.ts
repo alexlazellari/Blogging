@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
-  Relation,
   Unique,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
@@ -22,11 +21,11 @@ export class Like {
   @Column()
   articleId: number;
 
-  @ManyToOne(() => Article, (article) => article.likes)
+  @ManyToOne('Article', 'likes')
   @JoinColumn({ name: 'articleId' })
-  article: Relation<Article>;
+  article: Article;
 
-  @ManyToOne(() => User, (user) => user.likes)
+  @ManyToOne('User', 'likes')
   @JoinColumn({ name: 'userId' })
-  user: Relation<User>;
+  user: User;
 }

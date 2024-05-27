@@ -27,10 +27,10 @@ export class Article {
   @Column()
   userId: number;
 
-  @ManyToOne(() => User, (user) => user.articles)
+  @ManyToOne('User', 'articles')
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @OneToMany(() => Like, (like) => like.article)
+  @OneToMany('Like', 'article')
   likes: Relation<Like>[];
 }
