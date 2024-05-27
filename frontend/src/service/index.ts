@@ -251,3 +251,69 @@ export async function logout(): Promise<boolean> {
     return false;
   }
 }
+
+// Like an article
+export async function likeArticle(articleId: number): Promise<boolean | null> {
+  const config: AxiosRequestConfig = {
+    headers: {
+      Accept: "application/json",
+    },
+  };
+
+  try {
+    const response: AxiosResponse = await client.post(
+      `/likes`,
+      {
+        articleId,
+      },
+      config
+    );
+
+    // Check if the response status code is 200 (OK)
+    if (response.status === 201) {
+      return true;
+    } else {
+      console.error("Failed to like article:", response.status);
+      return null;
+    }
+  } catch (err) {
+    // Handle errors from Axios
+    if (axios.isAxiosError(err)) {
+      console.error("Axios error.", "Code:", err.code, "Message:", err.message);
+    } else {
+      console.error("Unexpected error:", err);
+    }
+    return null;
+  }
+}
+
+// Unlike an article
+export async function unlikeArticle(likeId: number): Promise<boolean | null> {
+  const config: AxiosRequestConfig = {
+    headers: {
+      Accept: "application/json",
+    },
+  };
+
+  try {
+    const response: AxiosResponse = await client.delete(
+      `/likes/${likeId}`,
+      config
+    );
+
+    if (response.status === 204) {
+      return true;
+    } else {
+      console.error("Failed to unlike article:", response.status);
+      return null;
+    }
+  } catch (err) {
+    // Handle errors from Axios
+    if (axios.isAxiosError(err)) {
+      console.error("Axios error.", "Code:", err.code, "Message:", err.message);
+    } else {
+      console.error("Unexpected error:", err);
+    }
+    return null;
+  }
+}

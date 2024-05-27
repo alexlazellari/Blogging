@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Like } from 'src/likes/entities/like.entity';
@@ -31,5 +32,5 @@ export class Article {
   user: User;
 
   @OneToMany(() => Like, (like) => like.article)
-  likes: Like[];
+  likes: Relation<Like>[];
 }

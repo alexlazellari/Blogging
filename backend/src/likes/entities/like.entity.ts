@@ -4,11 +4,14 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Relation,
+  Unique,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Article } from 'src/articles/entities/article.entity';
 
 @Entity()
+@Unique(['userId', 'articleId'])
 export class Like {
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,9 +24,9 @@ export class Like {
 
   @ManyToOne(() => Article, (article) => article.likes)
   @JoinColumn({ name: 'articleId' })
-  article: Article;
+  article: Relation<Article>;
 
   @ManyToOne(() => User, (user) => user.likes)
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user: Relation<User>;
 }

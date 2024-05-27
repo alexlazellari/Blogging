@@ -19,14 +19,22 @@ export class ArticlesService {
     });
   }
 
-  findAll(): Promise<Article[]> {
-    return this.articlesRepository.find({
-      relations: ['user'],
+  async findAll(userId: number): Promise<Article[]> {
+    const articles = await this.articlesRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.user', 'user')
+      .leftJoin('article.likes', 'likes')
+      .loadRelationCountAndMap('article.likesCount', 'article.likes')
+      .addSelect((subQuery) => {
+        return subQuery
+          .select('COUNT(1) > 0', 'userLiked')
+          .from('Like', 'like')
+          .where('like.articleId = article.id')
+          .andWhere('like.userId = :userId', { userId });
+      }, 'userLiked')
+      .getMany();
 
-      order: {
-        created: 'DESC', // Ensures the latest articles are first
-      },
-    });
+    return articles;
   }
 
   findOne(id: number) {

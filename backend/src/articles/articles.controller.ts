@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   ForbiddenException,
+  Req,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -36,9 +37,13 @@ export class ArticlesController {
     return this.articlesService.create(userInfo.id, createArticleDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    const articles = await this.articlesService.findAll();
+  async findAll(
+    @GetUser()
+    { username, id }: { username: string; id: number },
+  ) {
+    const articles = await this.articlesService.findAll(id);
     return {
       status: 'success',
       totalResults: articles.length,
