@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
+import { Like } from 'src/likes/entities/like.entity';
 
 @Entity()
 export class Article {
@@ -21,10 +23,13 @@ export class Article {
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created: Date;
 
-  @Column({})
+  @Column()
   userId: number;
 
   @ManyToOne(() => User, (user) => user.articles)
   @JoinColumn({ name: 'userId' })
   user: User;
+
+  @OneToMany(() => Like, (like) => like.article)
+  likes: Like[];
 }

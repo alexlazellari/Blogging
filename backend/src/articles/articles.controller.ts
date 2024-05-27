@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
   ForbiddenException,
-  Req,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -20,7 +19,6 @@ import {
   CaslAbilityFactory,
 } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Article } from './entities/article.entity';
-import { Request } from 'express';
 
 @Controller('articles')
 export class ArticlesController {
@@ -39,8 +37,7 @@ export class ArticlesController {
   }
 
   @Get()
-  async findAll(@Req() req: Request) {
-    console.log(req.ip);
+  async findAll() {
     const articles = await this.articlesService.findAll();
     return {
       status: 'success',
