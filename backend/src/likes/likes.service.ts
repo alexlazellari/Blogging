@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLikeDto } from './dto/create-like.dto';
-import { UpdateLikeDto } from './dto/update-like.dto';
 import { Repository } from 'typeorm';
 import { Like } from './entities/like.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,23 +11,18 @@ export class LikesService {
     private likesRepository: Repository<Like>,
   ) {}
 
-  create(createLikeDto: CreateLikeDto) {
-    // return this.likesRepository.save(createLikeDto);
-  }
-
-  findAll() {
-    return `This action returns all likes`;
+  create(userId: number, createLikeDto: CreateLikeDto) {
+    return this.likesRepository.save({
+      userId,
+      ...createLikeDto,
+    });
   }
 
   findOne(id: number) {
     return `This action returns a #${id} like`;
   }
 
-  update(id: number, updateLikeDto: UpdateLikeDto) {
-    return `This action updates a #${id} like`;
-  }
-
   remove(id: number) {
-    return `This action removes a #${id} like`;
+    return this.likesRepository.delete(id);
   }
 }
