@@ -11,6 +11,8 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { CaslModule } from './casl/casl.module';
 import { APP_GUARD } from '@nestjs/core';
+import { LikesModule } from './likes/likes.module';
+import { Like } from './likes/entities/like.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -36,12 +38,13 @@ import { APP_GUARD } from '@nestjs/core';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [Article, User],
+      entities: [Article, User, Like],
       synchronize: true,
     }),
     ArticlesModule,
     AuthModule,
     UsersModule,
+    LikesModule,
     CaslModule,
   ],
   controllers: [AppController],

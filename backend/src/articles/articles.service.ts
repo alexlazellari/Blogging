@@ -22,6 +22,7 @@ export class ArticlesService {
   findAll(): Promise<Article[]> {
     return this.articlesRepository.find({
       relations: ['user'],
+
       order: {
         created: 'DESC', // Ensures the latest articles are first
       },
