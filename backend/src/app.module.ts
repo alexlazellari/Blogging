@@ -4,15 +4,13 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArticlesModule } from './articles/articles.module';
-import { Article } from './articles/entities/article.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { User } from './users/entities/user.entity';
 import { CaslModule } from './casl/casl.module';
 import { APP_GUARD } from '@nestjs/core';
 import { LikesModule } from './likes/likes.module';
-import { Like } from './likes/entities/like.entity';
+import { dataSourceOptions } from 'src/database/data-source';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,12 +33,7 @@ import { Like } from './likes/entities/like.entity';
         limit: 100,
       },
     ]),
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
-      entities: [Article, User, Like],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     ArticlesModule,
     AuthModule,
     UsersModule,

@@ -14,7 +14,7 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "src/context/AuthContext";
-import { deleteArticle } from "src/service";
+import { deleteArticle, likeArticle, unlikeArticle } from "src/service";
 import { ArticleType } from "src/types";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -31,8 +31,16 @@ export default function Article({ article }: Props) {
   const open = Boolean(anchorEl);
   const textLimit = 200; // Adjust the character limit as needed
 
-  const toggleLike = () => {
-    setLiked(!liked);
+  const onLike = (articleId: number) => {
+    likeArticle(articleId);
+
+    setLiked(true);
+  };
+
+  const onUnlike = (likeId: number) => {
+    unlikeArticle(likedId);
+
+    setLiked(false);
   };
 
   const onMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -118,7 +126,7 @@ export default function Article({ article }: Props) {
         <Button
           color="error"
           startIcon={liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          onClick={toggleLike}
+          onClick={() => (liked ? onUnlike(article.id) : onLike(article.id))}
           size="small"
         >
           Love
