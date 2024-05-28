@@ -288,7 +288,9 @@ export async function likeArticle(articleId: number): Promise<boolean | null> {
 }
 
 // Unlike an article
-export async function unlikeArticle(likeId: number): Promise<boolean | null> {
+export async function unlikeArticle(
+  articleId: number
+): Promise<boolean | null> {
   const config: AxiosRequestConfig = {
     headers: {
       Accept: "application/json",
@@ -297,7 +299,7 @@ export async function unlikeArticle(likeId: number): Promise<boolean | null> {
 
   try {
     const response: AxiosResponse = await client.delete(
-      `/likes/${likeId}`,
+      `/likes/article/${articleId}`,
       config
     );
 
