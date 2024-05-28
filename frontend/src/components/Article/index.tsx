@@ -126,7 +126,7 @@ export default function Article({ article }: Props) {
         <Button
           color="error"
           startIcon={liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          onClick={() => (liked ? onUnlike(article.id) : onLike(article.id))}
+          onClick={() => (liked ? onUnlike(id) : onLike(article.id))}
           size="small"
         >
           Love
