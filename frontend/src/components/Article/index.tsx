@@ -25,22 +25,20 @@ interface Props {
 
 export default function Article({ article }: Props) {
   const { user } = useAuth();
-  const [liked, setLiked] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isLiked, setIsLiked] = useState(article.isLikedByUser);
   const [isFullText, setIsFullText] = useState(false);
   const open = Boolean(anchorEl);
   const textLimit = 200; // Adjust the character limit as needed
 
   const onLike = (articleId: number) => {
     likeArticle(articleId);
-
-    setLiked(true);
+    setIsLiked(true);
   };
 
-  const onUnlike = (likeId: number) => {
-    unlikeArticle(likedId);
-
-    setLiked(false);
+  const onUnlike = (articleId: number) => {
+    unlikeArticle(articleId);
+    setIsLiked(false);
   };
 
   const onMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -125,8 +123,8 @@ export default function Article({ article }: Props) {
       <CardActions>
         <Button
           color="error"
-          startIcon={liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          onClick={() => (liked ? onUnlike(id) : onLike(article.id))}
+          startIcon={isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          onClick={() => (isLiked ? onUnlike(article.id) : onLike(article.id))}
           size="small"
         >
           Love

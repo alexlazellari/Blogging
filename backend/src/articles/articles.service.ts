@@ -25,7 +25,7 @@ export class ArticlesService {
   async findAll(userId: number): Promise<IArticleFindAllResponse[]> {
     const articles = await this.articlesRepository
       .createQueryBuilder('article')
-      .leftJoin('article.user', 'user')
+      .leftJoinAndSelect('article.user', 'user')
       .leftJoin('article.likes', 'likes')
       .loadRelationCountAndMap('article.totalLikes', 'article.likes')
       .loadRelationCountAndMap(

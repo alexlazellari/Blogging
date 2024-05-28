@@ -21,6 +21,11 @@ export interface IArticleFindAllResponse {
   content: string;
   created: Date;
   userId: number;
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+  };
   totalLikes: number;
   isLikedByUser: number;
 }
