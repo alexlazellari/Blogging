@@ -5,6 +5,7 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { Response } from 'express';
 import { GetUser } from './auth.decorator';
 import { UsersService } from 'src/users/users.service';
+import { IAuthValidateResponse } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,16 +27,10 @@ export class AuthController {
     return res.status(200).send({ status: 'ok', message: 'Login successful' });
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
-
   //Add a isAuth route to check if the user is authenticated
   @UseGuards(JwtAuthGuard)
   @Get('isAuth')
-  async isAuth(@GetUser() userInfo: { username: string; id: number }) {
+  async isAuth(@GetUser() userInfo: IAuthValidateResponse) {
     const user = await this.userService.findOne(userInfo.username);
     return { status: 'ok', user };
   }
