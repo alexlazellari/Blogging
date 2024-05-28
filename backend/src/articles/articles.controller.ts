@@ -8,11 +8,8 @@ import {
   Delete,
   UseGuards,
   ForbiddenException,
-  Req,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
-import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { GetUser } from 'src/auth/auth.decorator';
 import {
@@ -20,6 +17,8 @@ import {
   CaslAbilityFactory,
 } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Article } from './entities/article.entity';
+import { CreateArticleDto, UpdateArticleDto } from './dto/articles.dto';
+import { IAuthValidateResponse } from 'src/auth/dto/auth.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -31,7 +30,7 @@ export class ArticlesController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
-    @GetUser() userInfo: { username: string; id: number },
+    @GetUser() userInfo: IAuthValidateResponse,
     @Body() createArticleDto: CreateArticleDto,
   ) {
     return this.articlesService.create(userInfo.id, createArticleDto);
@@ -41,7 +40,7 @@ export class ArticlesController {
   @Get()
   async findAll(
     @GetUser()
-    { username, id }: { username: string; id: number },
+    { id }: IAuthValidateResponse,
   ) {
     const articles = await this.articlesService.findAll(id);
     return {
@@ -63,10 +62,7 @@ export class ArticlesController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(
-    @GetUser() userInfo: { username: string; id: number },
-    @Param('id') id: string,
-  ) {
+  remove(@GetUser() userInfo: IAuthValidateResponse, @Param('id') id: string) {
     const ability = this.caslAbilityFactory.createForUser(userInfo);
 
     if (ability.cannot(Action.Delete, Article)) {

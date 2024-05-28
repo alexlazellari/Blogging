@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
 import { Repository } from 'typeorm';
 import { Article } from './entities/article.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+  CreateArticleDto,
+  IArticleFindAllResponse,
+  UpdateArticleDto,
+} from './dto/articles.dto';
 
 @Injectable()
 export class ArticlesService {
@@ -19,22 +22,22 @@ export class ArticlesService {
     });
   }
 
-  async findAll(userId: number): Promise<Article[]> {
+  async findAll(userId: number): Promise<IArticleFindAllResponse[]> {
     const articles = await this.articlesRepository
       .createQueryBuilder('article')
-      .leftJoinAndSelect('article.user', 'user')
+      .leftJoin('article.user', 'user')
       .leftJoin('article.likes', 'likes')
-      .loadRelationCountAndMap('article.likesCount', 'article.likes')
-      .addSelect((subQuery) => {
-        return subQuery
-          .select('COUNT(1) > 0', 'userLiked')
-          .from('Like', 'like')
-          .where('like.articleId = article.id')
-          .andWhere('like.userId = :userId', { userId });
-      }, 'userLiked')
+      .loadRelationCountAndMap('article.totalLikes', 'article.likes')
+      .loadRelationCountAndMap(
+        'article.isLikedByUser',
+        'article.likes',
+        'like',
+        (qb) => qb.where('like.userId = :userId', { userId }),
+      )
+      .orderBy('article.created', 'DESC')
       .getMany();
 
-    return articles;
+    return articles as unknown as IArticleFindAllResponse[];
   }
 
   findOne(id: number) {
