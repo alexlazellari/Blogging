@@ -9,8 +9,6 @@ export default function Root() {
   // Give me a function that get the query and return the result
   const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
-  console.log(matches);
-
   return (
     <Box sx={{ margin: { xs: "1rem" } }}>
       <Box

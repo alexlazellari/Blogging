@@ -25,4 +25,8 @@ export class LikesService {
   remove(id: number) {
     return this.likesRepository.delete(id);
   }
+
+  removeLikeByArticleId(userId: number, articleId: number) {
+    return this.likesRepository.delete({ userId, articleId });
+  }
 }
