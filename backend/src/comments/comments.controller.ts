@@ -29,7 +29,7 @@ export class CommentsController {
   create(
     @GetUser() userInfo: TAuthValidateResponse,
     @Body() createCommentDto: CreateCommentDto,
-  ) {
+  ): Promise<Comment> {
     return this.commentsService.create(userInfo.id, createCommentDto);
   }
 
