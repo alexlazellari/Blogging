@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import ArticleForm from "src/components/ArticleForm";
 import ArticleList from "src/components/ArticleList";
 import { fetchArticles } from "src/service";
-import { ArticleType } from "src/types";
+import { TArticle } from "src/types";
 
 export default function Feed() {
-  const [articles, setArticles] = useState<ArticleType[] | null>([]);
+  const [articles, setArticles] = useState<TArticle[] | null>([]);
 
   useEffect(() => {
     fetchArticles().then((data) => {

@@ -4,7 +4,7 @@ import { Article } from './entities/article.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   CreateArticleDto,
-  IArticleFindAllResponse,
+  TArticleFindAllResponse,
   UpdateArticleDto,
 } from './dto/articles.dto';
 
@@ -22,12 +22,13 @@ export class ArticlesService {
     });
   }
 
-  async findAll(userId: number): Promise<IArticleFindAllResponse[]> {
+  async findAll(userId: number): Promise<TArticleFindAllResponse[]> {
     const articles = await this.articlesRepository
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.user', 'user')
       .leftJoin('article.likes', 'likes')
       .loadRelationCountAndMap('article.totalLikes', 'article.likes')
+      .loadRelationCountAndMap('article.totalComments', 'article.comments')
       .loadRelationCountAndMap(
         'article.isLikedByUser',
         'article.likes',
@@ -37,7 +38,7 @@ export class ArticlesService {
       .orderBy('article.created', 'DESC')
       .getMany();
 
-    return articles as unknown as IArticleFindAllResponse[];
+    return articles as unknown as TArticleFindAllResponse[];
   }
 
   findOne(id: number) {

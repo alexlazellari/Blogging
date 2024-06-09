@@ -12,15 +12,15 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { useState } from "react";
-import { Avatar, Menu, MenuItem, Tooltip } from "@mui/material";
-import { useAuth } from "src/context/AuthContext";
+import { Button, Menu, MenuItem, Tooltip } from "@mui/material";
 import { logout } from "src/service";
+import { Link } from "react-router-dom";
+import MyAvatar from "../MyAvatar";
 
 const drawerWidth = 240;
 
@@ -107,7 +107,6 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function ComplexAppBar() {
-  const { user } = useAuth();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -153,21 +152,16 @@ export default function ComplexAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography sx={{ flex: 1 }} variant="h6" noWrap component="div">
-            Feed
-          </Typography>
+          <Typography
+            sx={{ flex: 1 }}
+            variant="h6"
+            noWrap
+            component="div"
+          ></Typography>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {user && (
-                  <Avatar
-                    src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${user.username}`}
-                    alt={`Avatar for ${user.firstName}`}
-                    sx={{
-                      border: "1px solid rgba(0, 0, 0, 0.2)",
-                    }}
-                  />
-                )}
+                {<MyAvatar />}
               </IconButton>
             </Tooltip>
             <Menu
@@ -182,7 +176,6 @@ export default function ComplexAppBar() {
                   p: 0,
                 },
               }}
-              id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: "top",
@@ -251,19 +244,20 @@ export default function ComplexAppBar() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Profile", "Settings"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
+          {["Account", "Settings"].map((text, index) => (
+            <ListItem
+              disablePadding
+              key={text}
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+              }}
+            >
+              <Button component={Link} to="/account">
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: open ? 2 : 0,
                     justifyContent: "center",
                     color: "#18181B",
                   }}
@@ -274,8 +268,11 @@ export default function ComplexAppBar() {
                     <SettingsOutlinedIcon />
                   )}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
+                <ListItemText
+                  primary={text}
+                  sx={{ display: open ? "block" : "none" }}
+                />
+              </Button>
             </ListItem>
           ))}
         </List>

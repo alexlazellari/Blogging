@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import NotFound from "src/views/Error";
@@ -31,7 +30,7 @@ export const AppRouter = () => {
         errorElement: <NotFound />,
         children: [
           { index: true, element: <Protected component={Feed} /> },
-          { path: "profile", element: <Protected component={Profile} /> },
+          { path: "account", element: <Protected component={Profile} /> },
           { path: "login", element: <Login /> },
         ],
       },
