@@ -1,17 +1,15 @@
 import {
-  Avatar,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
   TextField,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import { createArticle } from "src/service";
 import HelperTextAlert from "../HelperTextAlert";
-import { useAuth } from "src/context/AuthContext";
+import MyAvatar from "../MyAvatar";
 
 export type HelperTextType = {
   success: boolean;
@@ -19,7 +17,6 @@ export type HelperTextType = {
 };
 
 export default function ArticleForm() {
-  const { user } = useAuth();
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -93,17 +90,11 @@ export default function ArticleForm() {
         }}
         onClick={handleClickOpen}
       >
-        {user && (
-          <Avatar
-            sx={{
-              border: "1px solid rgba(0, 0, 0, 0.2)",
-              mr: 1,
-            }}
-            src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${user.username}`}
-            alt={`Avatar for ${user.firstName}`}
-          />
-        )}
-        <Typography variant="body1">Do you have any thoughts?</Typography>
+        {<MyAvatar />}
+        <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
+          {" "}
+          Do you have any thoughts?
+        </Typography>
       </Button>
       <Dialog
         open={open}

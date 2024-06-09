@@ -1,9 +1,9 @@
 import { Container } from "@mui/material";
 import Article from "src/components/Article";
-import { ArticleType } from "src/types";
+import { TArticle } from "src/types";
 
 interface Props {
-  articles: ArticleType[] | null;
+  articles: TArticle[] | null;
 }
 
 export default function ArticleList({ articles }: Props) {

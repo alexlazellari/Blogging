@@ -1,4 +1,4 @@
-export interface IAuthValidateResponse {
+export type TAuthValidateResponse = {
   username: string;
   id: number;
-}
+};

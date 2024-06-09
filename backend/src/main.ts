@@ -17,6 +17,7 @@ async function bootstrap() {
     origin: [
       configService.get<string>('CLIENT_ORIGIN_URL'),
       'http://127.0.0.1:5173',
+      'http://localhost:4173',
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: [
@@ -30,6 +31,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
       transform: true,
     }),
   );

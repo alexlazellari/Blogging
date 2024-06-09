@@ -11,6 +11,7 @@ import { CaslModule } from './casl/casl.module';
 import { APP_GUARD } from '@nestjs/core';
 import { LikesModule } from './likes/likes.module';
 import { dataSourceOptions } from 'src/database/data-source';
+import { CommentsModule } from './comments/comments.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -39,6 +40,7 @@ import { dataSourceOptions } from 'src/database/data-source';
     UsersModule,
     LikesModule,
     CaslModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [

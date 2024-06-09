@@ -18,7 +18,7 @@ import {
 } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Article } from './entities/article.entity';
 import { CreateArticleDto, UpdateArticleDto } from './dto/articles.dto';
-import { IAuthValidateResponse } from 'src/auth/dto/auth.dto';
+import { TAuthValidateResponse } from 'src/auth/dto/auth.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -30,7 +30,7 @@ export class ArticlesController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
-    @GetUser() userInfo: IAuthValidateResponse,
+    @GetUser() userInfo: TAuthValidateResponse,
     @Body() createArticleDto: CreateArticleDto,
   ) {
     return this.articlesService.create(userInfo.id, createArticleDto);
@@ -40,7 +40,7 @@ export class ArticlesController {
   @Get()
   async findAll(
     @GetUser()
-    { id }: IAuthValidateResponse,
+    { id }: TAuthValidateResponse,
   ) {
     const articles = await this.articlesService.findAll(id);
     return {
@@ -62,7 +62,7 @@ export class ArticlesController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@GetUser() userInfo: IAuthValidateResponse, @Param('id') id: string) {
+  remove(@GetUser() userInfo: TAuthValidateResponse, @Param('id') id: string) {
     const ability = this.caslAbilityFactory.createForUser(userInfo);
 
     if (ability.cannot(Action.Delete, Article)) {
@@ -70,10 +70,6 @@ export class ArticlesController {
         'You have no permission to delete this article',
       );
     }
-    // this.articlesService.remove(+id);
-    return {
-      status: 'ok',
-      message: `Article with id ${id} has been deleted`,
-    };
+    this.articlesService.remove(+id);
   }
 }

@@ -15,7 +15,7 @@ export class CreateArticleDto {
 
 export class UpdateArticleDto extends PartialType(CreateArticleDto) {}
 
-export interface IArticleFindAllResponse {
+export type TArticleFindAllResponse = {
   id: number;
   title: string;
   content: string;
@@ -27,5 +27,6 @@ export interface IArticleFindAllResponse {
     lastName: string;
   };
   totalLikes: number;
+  totalComments: number;
   isLikedByUser: number;
-}
+};

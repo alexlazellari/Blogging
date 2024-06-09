@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLikeDto } from './dto/create-like.dto';
+import { CreateLikeDto } from './dto/like.dto';
 import { Repository } from 'typeorm';
 import { Like } from './entities/like.entity';
 import { InjectRepository } from '@nestjs/typeorm';
