@@ -17,10 +17,20 @@ export class CommentsService {
     private commentsRepository: Repository<Comment>,
   ) {}
 
-  create(userId: number, createCommentDto: CreateCommentDto) {
-    return this.commentsRepository.save({
-      userId,
+  async create(
+    userId: number,
+    createCommentDto: CreateCommentDto,
+  ): Promise<Comment> {
+    const comment = await this.commentsRepository.save({
       ...createCommentDto,
+      user: { id: userId },
+    });
+
+    return this.commentsRepository.findOne({
+      where: {
+        id: comment.id,
+      },
+      relations: ['user'],
     });
   }
 
