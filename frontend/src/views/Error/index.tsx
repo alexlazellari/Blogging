@@ -10,7 +10,7 @@ import {
 import { Link, useRouteError } from "react-router-dom";
 
 function NotFound() {
-  const error = useRouteError();
+  const error = useRouteError() as any;
   return (
     <Grid
       container

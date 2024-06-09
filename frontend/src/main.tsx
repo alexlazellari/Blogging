@@ -4,7 +4,6 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme, CssBaseline } from "@mui/material";
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { AuthProvider } from "./context/AuthContext";
 import { AppRouter } from "./AppRouter";
@@ -34,12 +33,12 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline enableColorScheme />
-        <AppRouter />
-      </ThemeProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <AuthProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme />
+      <AppRouter />
+    </ThemeProvider>
+  </AuthProvider>
+  // </React.StrictMode>
 );

@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Like } from 'src/likes/entities/like.entity';
+import { Comment } from 'src/comments/entities/comment.entity';
 
 @Entity()
 export class Article {
@@ -33,4 +34,7 @@ export class Article {
 
   @OneToMany('Like', 'article')
   likes: Relation<Like>[];
+
+  @OneToMany('Comment', 'article')
+  comments: Relation<Comment>[];
 }

@@ -6,12 +6,12 @@ import {
   useEffect,
 } from "react";
 import { isAuth } from "src/service";
-import { UserType } from "src/types";
+import { TUser } from "src/types";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
   isLoading: boolean;
-  user: UserType | null;
+  user: TUser | null;
   error: string | null;
 }
 
@@ -22,21 +22,27 @@ export const AuthContext = createContext<AuthContextProps | undefined>(
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Check authentication status on component mount
     const checkAuth = async () => {
-      setIsLoading(true);
-      const user = await isAuth();
-      if (user) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
+      try {
+        setIsLoading(true);
+        const user = await isAuth();
+        if (user) {
+          setIsAuthenticated(true);
+          setUser(user);
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
-      setUser(user);
-      setIsLoading(false);
     };
 
     checkAuth();

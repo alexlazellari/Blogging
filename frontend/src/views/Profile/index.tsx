@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Container,
@@ -8,9 +7,10 @@ import {
   styled,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+// import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useState } from "react";
 import { useAuth } from "src/context/AuthContext";
+import MyAvatar from "src/components/MyAvatar";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -27,17 +27,17 @@ const VisuallyHiddenInput = styled("input")({
 export default function Profile() {
   // Make use of useAuth to get the user object
   const { user } = useAuth();
-  const [file, setFile] = useState<File | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
   // We need to know if the user is editing the profile and which field they are editing
   const [editingField, setEditingField] = useState<string | null>(null);
 
-  const handleFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    if (event.target.files) {
-      setFile(event.target.files[0]);
-    }
-  };
+  // const handleFileChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ): void => {
+  //   if (event.target.files) {
+  //     setFile(event.target.files[0]);
+  //   }
+  // };
 
   const onEdit = (field: string): void => {
     setEditingField(field);
@@ -100,7 +100,7 @@ export default function Profile() {
               mb: 2,
             }}
           >
-            <Avatar sx={{ width: 80, height: 80 }} />
+            <MyAvatar width={80} height={80} />
             <Button
               component="label"
               role={undefined}

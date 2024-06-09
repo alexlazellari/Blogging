@@ -13,13 +13,15 @@ export class UsersService {
   ) {}
 
   create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
-    return this.userRepository
-      .save(createUserDto)
-      .then(({ password, ...user }) => user);
+    return this.userRepository.save(createUserDto);
   }
 
   findAll() {
-    return `This action returns all users`;
+    // Include the password in the response as it is disabled in the entity
+    return this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .getMany();
   }
 
   async findOne(username: string): Promise<User | null> {

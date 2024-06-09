@@ -1,13 +1,13 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { Outlet } from "react-router-dom";
 import ComplexAppBar from "src/components/ComplexAppBar";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { Theme } from "@mui/material";
 
 export default function Root() {
   // Give me a function that get the query and return the result
-  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+  const matches = useMediaQuery((theme: Theme) => theme.breakpoints.up("sm"));
 
   return (
     <Box sx={{ margin: { xs: "1rem" } }}>
