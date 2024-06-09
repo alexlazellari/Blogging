@@ -12,13 +12,13 @@ import "./index.css";
 const theme = createTheme({
   palette: {
     mode: "light",
-    primary: {
-      main: "#18181b",
-    },
-    text: {
-      primary: "#18181b",
-      secondary: "#565656",
-    },
+    // primary: {
+    //   main: "#18181b",
+    // },
+    // text: {
+    //   primary: "#18181b",
+    //   secondary: "#565656",
+    // },
     contrastThreshold: 4.5,
   },
   typography: {

@@ -257,17 +257,20 @@ export async function sendComment(
   };
 
   try {
-    const response: AxiosResponse = await client.post(
+    const response: AxiosResponse<TComment> = await client.post(
       `/comments`,
       data,
       config
     );
 
-    // Check if the response status code is 201 (Created)
-    if (response.status === 201) {
-      return response.data;
+    const comment = response.data;
+
+    // Check if the data is an object of type TComment
+    if (typeof comment === "object") {
+      console.log("Comment sent successfully:", comment);
+      return comment;
     } else {
-      console.error("Failed to send comment:", response.status);
+      console.error("Failed to send comment:", response.data);
       return null;
     }
   } catch (err) {
@@ -294,7 +297,7 @@ export async function fetchComments(
     if (Array.isArray(data)) {
       return data;
     } else {
-      console.error("Failed to fetch comments:", response.status);
+      console.error("Failed to fetch comments:", response.data);
       return null;
     }
   } catch (err) {

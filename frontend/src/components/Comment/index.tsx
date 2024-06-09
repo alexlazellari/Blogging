@@ -14,6 +14,26 @@ import { useState } from "react";
 import Delete from "@mui/icons-material/Delete";
 import { useAuth } from "src/context/AuthContext";
 
+export function timeFromNow(date: string) {
+  const now = new Date();
+  const created = new Date(date);
+  const diff = now.getTime() - created.getTime();
+  const diffInSeconds = Math.floor(diff / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds}s`;
+  } else if (diffInMinutes < 60) {
+    return `${diffInMinutes}m`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours}h`;
+  } else {
+    return `${diffInDays}d`;
+  }
+}
+
 interface Props {
   comment: TComment;
   onDelete: (commentId: number) => void;
@@ -30,26 +50,6 @@ export default function Comment({ comment, onDelete }: Props) {
 
   const onClose = () => {
     setAnchorEl(null);
-  };
-
-  const timeFromNow = (date: string) => {
-    const now = new Date();
-    const created = new Date(date);
-    const diff = now.getTime() - created.getTime();
-    const diffInSeconds = Math.floor(diff / 1000);
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    const diffInDays = Math.floor(diffInHours / 24);
-
-    if (diffInSeconds < 60) {
-      return `${diffInSeconds}s`;
-    } else if (diffInMinutes < 60) {
-      return `${diffInMinutes}m`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours}h`;
-    } else {
-      return `${diffInDays}d`;
-    }
   };
 
   return (
