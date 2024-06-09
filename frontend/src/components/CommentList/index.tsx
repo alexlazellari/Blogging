@@ -1,8 +1,9 @@
 import { Box, Button, Container } from "@mui/material";
 import Comment from "../Comment";
 import { useEffect, useState } from "react";
-import { deleteComment, fetchComments } from "src/service";
+import { deleteComment, fetchComments, sendComment } from "src/service";
 import { TComment } from "../../types";
+import CommentForm from "../CommentForm";
 
 interface Props {
   articleId: number;
@@ -10,6 +11,7 @@ interface Props {
 
 export default function CommentList({ articleId }: Props) {
   const [comments, setComments] = useState<TComment[]>([]);
+  const [comment, setComment] = useState("");
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -34,8 +36,25 @@ export default function CommentList({ articleId }: Props) {
     }
   };
 
+  const onCreate = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = await sendComment(articleId, comment);
+    if (!data) return;
+    setComments((prevComments) => [data, ...prevComments]);
+    setComment("");
+  };
+
+  const onComment = (comment: string) => {
+    setComment(comment);
+  };
+
   return (
     <Container disableGutters>
+      <CommentForm
+        onCreate={onCreate}
+        comment={comment}
+        onComment={onComment}
+      />
       {comments &&
         comments.map((comment) => (
           <Comment key={comment.id} comment={comment} onDelete={onDelete} />

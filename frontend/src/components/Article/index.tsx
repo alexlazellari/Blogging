@@ -12,28 +12,17 @@ import {
   CardActions,
   Stack,
   Container,
-  TextField,
-  Popover,
   Divider,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "src/context/AuthContext";
-import {
-  deleteArticle,
-  likeArticle,
-  sendComment,
-  unlikeArticle,
-} from "src/service";
+import { deleteArticle, likeArticle, unlikeArticle } from "src/service";
 import { TArticle } from "src/types";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
-import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
-import SendIcon from "@mui/icons-material/Send";
-import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import CommentList from "../CommentList";
-import MyAvatar from "../MyAvatar";
 
 interface Props {
   article: TArticle;
@@ -41,19 +30,14 @@ interface Props {
 
 export default function Article({ article }: Props) {
   const { user } = useAuth();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [isLiked, setIsLiked] = useState(article.isLikedByUser);
   const [isFullText, setIsFullText] = useState(false);
-  const [anchorEmoji, setAnchorEmoji] = React.useState<null | HTMLElement>(
-    null
-  );
+
   const open = Boolean(anchorEl);
   const textLimit = 200; // Adjust the character limit as needed
-  const openEmoji = Boolean(anchorEmoji);
-  const [comment, setComment] = useState("");
-  const [showComments, setShowComments] = useState(false);
 
-  console.log(showComments);
+  const [showComments, setShowComments] = useState(false);
 
   const onLike = (articleId: number) => {
     likeArticle(articleId);
@@ -82,19 +66,6 @@ export default function Article({ article }: Props) {
     setIsFullText(!isFullText);
   };
 
-  const onEmojiPickerClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEmoji(event.currentTarget);
-  };
-
-  const onCloseEmojiPicker = () => {
-    setAnchorEmoji(null);
-  };
-
-  const onSend = () => {
-    sendComment(article.id, comment);
-    setComment("");
-  };
-
   const onComment = () => {
     setShowComments(true);
   };
@@ -115,12 +86,7 @@ export default function Article({ article }: Props) {
         p: 2,
       }}
     >
-      <Card
-        elevation={0}
-        sx={{
-          mb: 2,
-        }}
-      >
+      <Card elevation={0}>
         <CardHeader
           title={`${article.user.firstName} ${article.user.lastName}`}
           subheader={new Date(article.created).toUTCString().replace("GMT", "")}
@@ -232,62 +198,7 @@ export default function Article({ article }: Props) {
           </Stack>
         </CardActions>
       </Card>
-      <Container disableGutters>
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{
-            mb: 2,
-          }}
-        >
-          <MyAvatar width={36} height={36} />
-          <TextField
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            fullWidth
-            multiline
-            size="small"
-            placeholder="Comment"
-          />
-          <Stack
-            sx={{
-              alignSelf: "flex-end",
-            }}
-            direction="row"
-            spacing={1}
-          >
-            <IconButton onClick={onEmojiPickerClick}>
-              <EmojiEmotionsOutlinedIcon />
-            </IconButton>
-            <Popover
-              open={openEmoji}
-              anchorEl={anchorEmoji}
-              onClose={onCloseEmojiPicker}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              elevation={0}
-            >
-              <EmojiPicker
-                searchDisabled
-                skinTonesDisabled
-                emojiStyle={EmojiStyle.NATIVE}
-                onEmojiClick={(emojiObject) => {
-                  setComment(comment + emojiObject.emoji);
-                }}
-              />
-            </Popover>
-            <IconButton onClick={onSend}>
-              <SendIcon />
-            </IconButton>
-          </Stack>
-        </Stack>
-      </Container>
+
       {showComments && <CommentList articleId={article.id} />}
     </Container>
   );
