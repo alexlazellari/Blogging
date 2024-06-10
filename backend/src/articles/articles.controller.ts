@@ -17,7 +17,11 @@ import {
   CaslAbilityFactory,
 } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { Article } from './entities/article.entity';
-import { CreateArticleDto, UpdateArticleDto } from './dto/articles.dto';
+import {
+  CreateArticleDto,
+  TArticleFindOneResponse,
+  UpdateArticleDto,
+} from './dto/articles.dto';
 import { TAuthValidateResponse } from 'src/auth/dto/auth.dto';
 
 @Controller('articles')
@@ -32,7 +36,7 @@ export class ArticlesController {
   create(
     @GetUser() userInfo: TAuthValidateResponse,
     @Body() createArticleDto: CreateArticleDto,
-  ) {
+  ): Promise<TArticleFindOneResponse> {
     return this.articlesService.create(userInfo.id, createArticleDto);
   }
 
@@ -50,9 +54,10 @@ export class ArticlesController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.articlesService.findOne(+id);
+  findOne(@GetUser() userInfo: TAuthValidateResponse, @Param('id') id: string) {
+    return this.articlesService.findOne(userInfo.id, +id);
   }
 
   @Patch(':id')

@@ -49,11 +49,12 @@ export async function fetchArticles(): Promise<TArticle[] | null> {
       config
     );
 
-    // Check if the response status code is 200 (OK)
-    if (response.status === 200) {
-      return response.data.articles;
+    const articles = response.data.articles;
+
+    if (Array.isArray(articles)) {
+      return articles;
     } else {
-      console.error("Failed to fetch articles:", response.status);
+      console.error("Failed to fetch articles:", response.data);
       return null;
     }
   } catch (err) {
