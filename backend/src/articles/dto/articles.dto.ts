@@ -30,3 +30,5 @@ export type TArticleFindAllResponse = {
   totalComments: number;
   isLikedByUser: number;
 };
+
+export type TArticleFindOneResponse = TArticleFindAllResponse;

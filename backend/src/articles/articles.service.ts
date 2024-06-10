@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   CreateArticleDto,
   TArticleFindAllResponse,
+  TArticleFindOneResponse,
   UpdateArticleDto,
 } from './dto/articles.dto';
 
@@ -15,11 +16,16 @@ export class ArticlesService {
     private articlesRepository: Repository<Article>,
   ) {}
 
-  create(userId: number, createArticleDto: CreateArticleDto): Promise<Article> {
-    return this.articlesRepository.save({
+  async create(
+    userId: number,
+    createArticleDto: CreateArticleDto,
+  ): Promise<TArticleFindOneResponse> {
+    const article = await this.articlesRepository.save({
       userId,
       ...createArticleDto,
     });
+
+    return this.findOne(userId, article.id);
   }
 
   async findAll(userId: number): Promise<TArticleFindAllResponse[]> {
@@ -41,8 +47,26 @@ export class ArticlesService {
     return articles as unknown as TArticleFindAllResponse[];
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} article`;
+  async findOne(
+    userId: number,
+    articleId: number,
+  ): Promise<TArticleFindOneResponse> {
+    const article = await this.articlesRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.user', 'user')
+      .leftJoin('article.likes', 'likes')
+      .loadRelationCountAndMap('article.totalLikes', 'article.likes')
+      .loadRelationCountAndMap('article.totalComments', 'article.comments')
+      .loadRelationCountAndMap(
+        'article.isLikedByUser',
+        'article.likes',
+        'like',
+        (qb) => qb.where('like.userId = :userId', { userId }),
+      )
+      .where('article.id = :articleId', { articleId }) // Filters to find one specific article
+      .getOne(); // Retrieves only one result
+
+    return article as unknown as TArticleFindOneResponse;
   }
 
   update(id: number, updateArticleDto: UpdateArticleDto) {
