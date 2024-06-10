@@ -10,13 +10,18 @@ import { useState } from "react";
 import { createArticle } from "src/service";
 import HelperTextAlert from "../HelperTextAlert";
 import MyAvatar from "../MyAvatar";
+import { TArticle } from "src/types";
 
 export type HelperTextType = {
   success: boolean;
   message: string;
 };
 
-export default function ArticleForm() {
+interface Props {
+  onSubmit: (title: string, content: string) => Promise<TArticle | null>;
+}
+
+export default function ArticleForm({ onSubmit }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -27,16 +32,12 @@ export default function ArticleForm() {
   });
   const [openHelperText, setOpenHelperText] = useState<boolean>(false);
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Set loading state to true
     setIsLoading(true);
 
-    // Call the API to create a new article
-    const article = await createArticle({
-      title,
-      content,
-    });
+    const article = await onSubmit(title, content);
 
     if (article) {
       setTitle("");
@@ -109,7 +110,7 @@ export default function ArticleForm() {
           },
         }}
       >
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onFormSubmit}>
           <DialogTitle
             sx={{
               textAlign: "center",
